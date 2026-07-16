@@ -1,24 +1,54 @@
 # LimboOS Repo
----
-> What is LimboOS?
-> 
-**LimboOS** this lightweight OpenSource OS for [Limbo Pc emulator x86](https://github.com/limboemu/Limbo)
 
 ---
-> Who created LimboOS?
->
-[Arena.ai agent](https://arena.ai/agent) and one human)
+
+## What is LimboOS?
+
+**LimboOS** is a lightweight open-source OS designed for the [Limbo PC Emulator (x86)](https://github.com/limboemu/Limbo).
 
 ---
-> What kind of Repo is this?
->
-This Repo has the **Live CD .img** file (The OS itself), Updates and **Apps**
+
+## Who created LimboOS?
+
+Created by the [Arena.ai agent](https://arena.ai/agent) and one human.
 
 ---
-> What is LimboOS based on?
->
-LimboOS is based on [Alpine Linux](https://www.alpinelinux.org/about) and a Custom Graphical Shell
- 
 
+## What kind of repository is this?
 
+This repository contains:
 
+- The **Live CD .img** file (the OS itself)
+- Updates
+- **Apps**
+
+---
+
+## What is LimboOS based on?
+
+LimboOS is based on [Alpine Linux](https://www.alpinelinux.org/about) and a custom graphical shell.
+
+---
+
+## Getting Started
+
+> **Note:** This OS is intended to run inside the Limbo emulator.
+
+1. Download the latest `.img` file from the releases (or build it yourself).
+2. Load it into [Limbo Emulator](https://github.com/limboemu/Limbo).
+3. Boot and enjoy the lightweight experience!
+
+## Contributing
+
+Contributions are welcome! Feel free to open issues or pull requests for:
+- Bug fixes
+- New apps
+- Improvements to the graphical shell
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+*Official LimboOS repository maintained by FlexTeam*
