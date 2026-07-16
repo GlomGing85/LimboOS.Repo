@@ -54,4 +54,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 *Official LimboOS repository maintained by FlexTeam*
 
 # UNDER CONSTRUCTION!!!
-> There is nothing here yet because the OS is in the early stages of development. more detailed description on [LimboOS.Repo](https://glomging85.github.io/LimboOS.Repo.GlomGing85.github.io/#)
+> There is nothing here yet because the OS is in the early stages of development. more detailed description on [LimboOS.Repo](https://glomging85.github.io/LimboOS.Repo.GlomGing85.github.io/#get-started)
