@@ -1,0 +1,38 @@
+{
+    "limbo-snake": {
+        "name": "LimboOS Retro Snake Game",
+        "description": "Classic ASCII Snake game optimized for 80x25 terminal grid and Limbo x86",
+        "category": "Games",
+        "version": "1.0.0",
+        "author": "LimboOS Team",
+        "size": "2.1 KB",
+        "code": "#!/usr/bin/env python3\nimport curses, random, time\ndef main(stdscr):\n    curses.curs_set(0)\n    stdscr.nodelay(1)\n    stdscr.timeout(100)\n    sh, sw = stdscr.getmaxyx()\n    w = curses.newwin(sh, sw, 0, 0)\n    w.keypad(1)\n    w.timeout(100)\n    snk_x = sw//4; snk_y = sh//2\n    snake = [[snk_y, snk_x], [snk_y, snk_x-1], [snk_y, snk_x-2]]\n    food = [sh//2, sw//2]\n    w.addch(food[0], food[1], curses.ACS_PI)\n    key = curses.KEY_RIGHT\n    score = 0\n    while True:\n        next_key = w.getch()\n        key = key if next_key == -1 else next_key\n        if key == 27: break\n        new_head = [snake[0][0], snake[0][1]]\n        if key == curses.KEY_DOWN: new_head[0] += 1\n        if key == curses.KEY_UP: new_head[0] -= 1\n        if key == curses.KEY_LEFT: new_head[1] -= 1\n        if key == curses.KEY_RIGHT: new_head[1] += 1\n        snake.insert(0, new_head)\n        if snake[0] == food:\n            score += 10\n            food = None\n            while food is None:\n                nf = [random.randint(1, sh-2), random.randint(1, sw-2)]\n                food = nf if nf not in snake else None\n            w.addch(food[0], food[1], curses.ACS_PI)\n        else:\n            tail = snake.pop()\n            w.addch(tail[0], tail[1], ' ')\n        try: w.addch(snake[0][0], snake[0][1], curses.ACS_CKBOARD)\n        except: break\n        w.addstr(0, 2, f\" [ LimboOS Snake | Score: {score} | ESC to Quit ] \")\nif __name__ == \"__main__\": curses.wrapper(main)"
+    },
+    "limbo-matrix": {
+        "name": "LimboOS Cyber Matrix Rain",
+        "description": "ASCII green digital matrix rain screen saver for LimboOS terminal",
+        "category": "Demos",
+        "version": "1.0.0",
+        "author": "LimboOS Team",
+        "size": "1.5 KB",
+        "code": "#!/usr/bin/env python3\nimport os, sys, time, random\nC_GREEN = \"\\033[1;32m\"\nC_WHITE = \"\\033[1;37m\"\nC_RESET = \"\\033[0m\"\ndef main():\n    cols = 80\n    try: cols = os.get_terminal_size().columns\n    except: pass\n    drops = [0] * cols\n    print(f\"\\033[2J\\033[H\", end=\"\")\n    try:\n        while True:\n            line = \"\"\n            for i in range(cols):\n                if random.random() < 0.08 or drops[i] > 0:\n                    char = random.choice(\"0123456789ABCDEF@#$%&*+=-\")\n                    color = C_WHITE if random.random() < 0.1 else C_GREEN\n                    line += f\"{color}{char}{C_RESET}\"\n                    drops[i] = random.randint(1, 15) if drops[i] == 0 else drops[i] - 1\n                else:\n                    line += \" \"\n            print(line)\n            time.sleep(0.06)\n    except KeyboardInterrupt:\n        print(f\"\\n{C_WHITE}[+] Exited LimboOS Matrix Rain.{C_RESET}\")\nif __name__ == \"__main__\": main()"
+    },
+    "limbo-clock": {
+        "name": "LimboOS Big ASCII Digital Clock",
+        "description": "Large digital ASCII clock display for terminal monitoring",
+        "category": "Utilities",
+        "version": "1.0.0",
+        "author": "LimboOS Team",
+        "size": "0.9 KB",
+        "code": "#!/usr/bin/env python3\nimport time, os\nC_TEAL = \"\\033[1;36m\"\nC_RESET = \"\\033[0m\"\ndef main():\n    try:\n        while True:\n            os.system(\"clear || cls\")\n            now = time.strftime(\"%H : %M : %S\")\n            date_str = time.strftime(\"%A, %d %B %Y\")\n            print(f\"\\n\\n\\n{C_TEAL}\")\n            print(\"      ===== [ LimboOS System Digital Clock ] =====\")\n            print(f\"\\n              [  {now}  ]\")\n            print(f\"\\n                 {date_str}{C_RESET}\\n\")\n            print(\"           Press Ctrl+C to exit back to LimboOS Shell.\")\n            time.sleep(1)\n    except KeyboardInterrupt: pass\nif __name__ == \"__main__\": main()"
+    },
+    "limbo-sysstat": {
+        "name": "LimboOS Advanced Hardware Diagnostic",
+        "description": "Extended system hardware scanner and benchmark reporter",
+        "category": "Diagnostics",
+        "version": "1.0.0",
+        "author": "LimboOS Team",
+        "size": "1.2 KB",
+        "code": "#!/usr/bin/env python3\nimport os, sys, platform\nprint(\"\\033[1;36m========================================================================\\033[0m\")\nprint(\"           LimboOS Advanced Hardware Diagnostic Report v1.0             \")\nprint(\"\\033[1;36m========================================================================\\033[0m\")\nprint(f\" [★] System Platform  : {platform.system()} {platform.release()} ({platform.machine()})\")\nprint(f\" [★] Python Version   : {platform.python_version()}\")\ntry:\n    with open(\"/proc/cpuinfo\") as f:\n        for line in f:\n            if \"model name\" in line:\n                print(f\" [★] CPU Model Name   : {line.split(':')[1].strip()}\")\n                break\nexcept: pass\ntry:\n    with open(\"/proc/meminfo\") as f:\n        for line in f[:4]:\n            print(f\" [★] {line.strip()}\")\nexcept: pass\nprint(\"\\033[1;36m========================================================================\\033[0m\")"
+    }
+}

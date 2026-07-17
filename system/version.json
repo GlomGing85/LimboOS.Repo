@@ -1,0 +1,19 @@
+{
+    "version": "1.0.0",
+    "codename": "Genesis",
+    "build_date": "2026-07-17",
+    "github_repo": "GlomGing85/LimboOS.Repo",
+    "architecture": "x86",
+    "kernel": "6.1-lts",
+    "gui": "LimboOS Custom Tkinter Desktop v1.0",
+    "package_manager": "lpkg v1.0",
+    "ota_enabled": true,
+    "features": [
+        "custom_gui_desktop",
+        "lpkg_package_manager",
+        "github_app_store",
+        "ota_updates",
+        "ascii_theme",
+        "lightweight_linux"
+    ]
+}
