@@ -23,7 +23,7 @@ sudo bash build/build_limboos.sh --arch x86_64 --size 300
 ls -lh build/output/
 # → limboos-1.0.0-x86_64.img
 # → limboos-1.0.0-x86_64.qcow2  ← use this!
-   ```
+```
 4. **Download the image:** right click on `build/output/limboos-1.0.0-x86.qcow2` → Download
 5. **Open in Limbo** as Hard Disk
 
