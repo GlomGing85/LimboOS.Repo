@@ -9,10 +9,20 @@ No need to install anything — Linux right in your browser!
 
 2. **Click `<> Code`** → `Codespaces` → `Create codespace on main` 3. **In the Codespaces terminal:** 
    ```bash
-   sudo apt-get update
-   sudo apt-get install -y debootstrap grub-pc-bin xorriso mtools qemu-utils python3 python3-tk
+# 1. Dependencies
+sudo apt-get update
+sudo apt-get install -y debootstrap grub-pc-bin xorriso mtools qemu-utils python3-tk
 
-   sudo bash build/build_limboos.sh --arch x86 --size 300
+# 2. Download kernel
+bash build/download_kernel.sh x86_64
+
+# 3. build
+sudo bash build/build_limboos.sh --arch x86_64 --size 300
+
+# 4. done! files in build/output/
+ls -lh build/output/
+# → limboos-1.0.0-x86_64.img
+# → limboos-1.0.0-x86_64.qcow2  ← use this!
    ```
 4. **Download the image:** right click on `build/output/limboos-1.0.0-x86.qcow2` → Download
 5. **Open in Limbo** as Hard Disk
