@@ -8,7 +8,8 @@ No need to install anything — Linux right in your browser!
 1. **Open the repo:** https://github.com/GlomGing85/LimboOS.Repo
 
 2. **Click `<> Code`** → `Codespaces` → `Create codespace on main` 3. **In the Codespaces terminal:** 
-   ```bash
+
+```bash
 # 1. Dependencies
 sudo apt-get update
 sudo apt-get install -y debootstrap grub-pc-bin xorriso mtools qemu-utils python3-tk
