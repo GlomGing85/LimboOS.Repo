@@ -1,0 +1,12 @@
+{
+    "id": "limbo-matrix",
+    "name": "LimboOS Cyber Matrix Rain",
+    "description": "ASCII green digital matrix rain screen saver for LimboOS terminal",
+    "category": "Demos",
+    "version": "1.0.0",
+    "author": "LimboOS Team",
+    "license": "MIT",
+    "dependencies": ["python3"],
+    "entry_point": "limbo-matrix",
+    "icon": "🟢"
+}

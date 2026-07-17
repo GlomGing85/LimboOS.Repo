@@ -1,0 +1,12 @@
+{
+    "id": "limbo-clock",
+    "name": "LimboOS Big ASCII Digital Clock",
+    "description": "Large digital ASCII clock display for terminal monitoring",
+    "category": "Utilities",
+    "version": "1.0.0",
+    "author": "LimboOS Team",
+    "license": "MIT",
+    "dependencies": ["python3"],
+    "entry_point": "limbo-clock",
+    "icon": "🕐"
+}

@@ -1,0 +1,12 @@
+{
+    "id": "limbo-sysstat",
+    "name": "LimboOS Advanced Hardware Diagnostic",
+    "description": "Extended system hardware scanner and benchmark reporter",
+    "category": "Diagnostics",
+    "version": "1.0.0",
+    "author": "LimboOS Team",
+    "license": "MIT",
+    "dependencies": ["python3"],
+    "entry_point": "limbo-sysstat",
+    "icon": "🔧"
+}

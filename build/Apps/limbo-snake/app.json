@@ -1,0 +1,12 @@
+{
+    "id": "limbo-snake",
+    "name": "LimboOS Retro Snake Game",
+    "description": "Classic ASCII Snake game optimized for 80x25 terminal grid and Limbo x86",
+    "category": "Games",
+    "version": "1.0.0",
+    "author": "LimboOS Team",
+    "license": "MIT",
+    "dependencies": ["python3", "python3-curses"],
+    "entry_point": "limbo-snake",
+    "icon": "🐍"
+}
