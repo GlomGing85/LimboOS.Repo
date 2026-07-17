@@ -7,7 +7,7 @@
 #   sudo bash build_limboos.sh [--arch x86|x86_64] [--size 300]
 # ==============================================================================
 
-set -euo pipefail
+set -eo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
@@ -45,12 +45,14 @@ echo -e "${CYAN}  Arch: ${ARCH} | Size: ${IMAGE_SIZE_MB}MB${NC}"
 step "Checking prerequisites..."
 if [[ $EUID -ne 0 ]]; then fail "Run with sudo"; fi
 
+MISSING=""
 for tool in debootstrap grub-mkrescue xorriso mtools qemu-img mkfs.ext4; do
     command -v "$tool" &>/dev/null || MISSING="$MISSING $tool"
 done
 if [[ -n "$MISSING" ]]; then
-    echo -e "${YELLOW}  Install: apt-get install debootstrap grub-pc-bin grub-common xorriso mtools qemu-utils e2fsprogs${NC}"
-    fail "Missing:$MISSING"
+    echo -e "${YELLOW}  Install:${MISSING}${NC}"
+    echo -e "${YELLOW}  Run: apt-get install debootstrap grub-pc-bin grub-common xorriso mtools qemu-utils e2fsprogs${NC}"
+    fail "Missing tools:${MISSING}"
 fi
 ok "All prerequisites OK."
 
@@ -59,7 +61,7 @@ step "Cleaning..."
 rm -rf "${WORK_DIR}"
 mkdir -p "${BUILD_DIR}" "${WORK_DIR}" "${ROOTFS_DIR}"
 
-# ── 1. Rootfs via debootstrap ─────────────────────────────────────────────────
+# ─ 1. Rootfs via debootstrap ─────────────────────────────────────────────────
 step "Creating rootfs (Debian bookworm minbase)..."
 
 debootstrap --arch=i386 --variant=minbase \
@@ -125,23 +127,19 @@ chmod +x "${ROOTFS_DIR}/etc/init.d/rcS"
 # ── 3. Install LimboOS components ─────────────────────────────────────────────
 step "Installing LimboOS components..."
 
-# Desktop
 for f in limboos_desktop.py limboos_desktop_v2.py limboos_theme.py; do
     [[ -f "${PROJECT_DIR}/desktop/$f" ]] && cp "${PROJECT_DIR}/desktop/$f" "${ROOTFS_DIR}/usr/lib/limboos/"
 done
 [[ -f "${PROJECT_DIR}/desktop/limboos_autostart.sh" ]] && cp "${PROJECT_DIR}/desktop/limboos_autostart.sh" "${ROOTFS_DIR}/usr/bin/" && chmod +x "${ROOTFS_DIR}/usr/bin/limboos_autostart.sh"
 ok "Desktop installed."
 
-# lpkg
 [[ -f "${PROJECT_DIR}/lpkg/lpkg.py" ]] && cp "${PROJECT_DIR}/lpkg/lpkg.py" "${ROOTFS_DIR}/usr/bin/lpkg" && chmod +x "${ROOTFS_DIR}/usr/bin/lpkg"
 [[ -f "${PROJECT_DIR}/lpkg/repo_manifest.json" ]] && cp "${PROJECT_DIR}/lpkg/repo_manifest.json" "${ROOTFS_DIR}/var/lib/lpkg/"
 ok "lpkg installed."
 
-# OTA
 [[ -f "${PROJECT_DIR}/system/ota_update.py" ]] && cp "${PROJECT_DIR}/system/ota_update.py" "${ROOTFS_DIR}/usr/bin/limboos-update" && chmod +x "${ROOTFS_DIR}/usr/bin/limboos-update"
 ok "OTA system installed."
 
-# Apps
 for app_dir in "${PROJECT_DIR}/Apps"/*/; do
     [[ -d "$app_dir" ]] || continue
     app_name=$(basename "$app_dir")
@@ -155,7 +153,6 @@ step "Setting up boot files..."
 
 mkdir -p "${ROOTFS_DIR}/boot/grub"
 
-# Check for pre-downloaded kernel
 if [[ -f "${SCRIPT_DIR}/vmlinuz" && -f "${SCRIPT_DIR}/initrd.img" ]]; then
     cp "${SCRIPT_DIR}/vmlinuz" "${ROOTFS_DIR}/boot/"
     cp "${SCRIPT_DIR}/initrd.img" "${ROOTFS_DIR}/boot/"
@@ -167,7 +164,6 @@ else
 LimboOS Boot Files Needed:
 1. vmlinuz  — Linux kernel (download via download_kernel.sh)
 2. initrd.img — initial ramdisk
-
 Place both files in /boot/ before creating the disk image.
 EOF
 fi
@@ -193,7 +189,6 @@ OUTPUT_QCOW2="${BUILD_DIR}/limboos-1.0.0-${ARCH}.qcow2"
 
 qemu-img create -f raw "$OUTPUT_IMG" "${IMAGE_SIZE_MB}M"
 
-# Partition
 echo -e "o\nn\np\n1\n\n\na\n1\nw" | fdisk "$OUTPUT_IMG" 2>/dev/null || true
 
 LOOP_DEV=$(losetup -f --show "$OUTPUT_IMG")
@@ -206,7 +201,6 @@ MOUNT_DIR=$(mktemp -d)
 mount "$PART_DEV" "$MOUNT_DIR"
 cp -a "${ROOTFS_DIR}/." "$MOUNT_DIR/"
 
-# Install GRUB
 grub-install --target=i386-pc --boot-directory="${MOUNT_DIR}/boot" "$LOOP_DEV" 2>/dev/null || true
 umount "$MOUNT_DIR"
 losetup -d "$LOOP_DEV"
@@ -226,7 +220,7 @@ for f in *.img *.qcow2; do
     sha256sum "$f" > "${f}.sha256"
 done
 
-# ── Done! ─────────────────────────────────────────────────────────────────────
+# ─ Done! ─────────────────────────────────────────────────────────────────────
 echo ""
 echo -e "${CYAN}============================================================================${NC}"
 echo -e "${GREEN}  LimboOS Build Complete!${NC}"
@@ -235,8 +229,8 @@ echo ""
 ls -lh "$BUILD_DIR/"
 echo ""
 echo "  Import into Limbo PC Emulator:"
-echo "  - Architecture: x86 (or x86_64)"
+echo "  - Architecture: ${ARCH}"
 echo "  - RAM: 512 MB"
-echo "  - Hard Disk: limboos-1.0.0-x86.qcow2"
+echo "  - Hard Disk: limboos-1.0.0-${ARCH}.qcow2"
 echo "  - Boot from: Hard Disk"
 echo ""
